@@ -1,4 +1,7 @@
 const express = require('express');
+const {userRouter} = require('./routes/user');
+const {courseRouter} = require('./routes/courses');
+const { adminRouter } = require('./routes/admin');
 
 const app = express();
 const port = 3000;
@@ -6,44 +9,11 @@ const port = 3000;
 app.use(express.json());
 
 
-// User
-app.post('user/signup', function (req, res){
-    res.send('Hello World!');
-});
 
-app.post('user/login',function (req,res){
-    res.send("This is login router");
-})
+app.use("/api/v1/user",userRouter);
+app.use("ap1/v1/course",courseRouter);
+app.use("api/v1/admin",adminRouter)
 
-app.post('user/purchase-course',function(req,res){
-    res.send("Purchase the course");
-})
-
-app.get('user/course',function(req,res){
-    res.send("See all the course here");
-})
-
-
-//Admin
-app.post('admin/signup', function (req, res){
-    res.send('Hello World!');
-});
-
-app.post('admin/login',function (req,res){
-    res.send("This is login router");
-});
-
-app.post('admin/create-course',function (req,res){
-    res.send("Create a course")
-})
-
-app.delete('admin/course',function(req,res){
-    res.send("Deleting the course")
-})
-
-app.put('admin/update-cousrse',function(req,res){
-    res.send("Updating the course");
-})
 
 
 
