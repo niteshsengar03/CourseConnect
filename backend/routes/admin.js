@@ -6,19 +6,27 @@ adminRouter.post('/signup', function (req, res){
     res.send('Hello World!');
 });
 
-adminRouter.post('/login',function (req,res){
+adminRouter.post('/signin',function (req,res){
     res.send("This is login router");
 });
 
-adminRouter.post('/create-course',function (req,res){
+//create course by admin
+adminRouter.post('/course',function (req,res){
     res.send("Create a course")
 })
 
+//delet course by admin
 adminRouter.delete('/course',function(req,res){
     res.send("Deleting the course")
 })
 
-adminRouter.put('/update-cousrse',function(req,res){
+//update course 
+adminRouter.put('/course',function(req,res){
+    res.send("Updating the course");
+})
+
+// all courses created by admin
+adminRouter.get('/course/bulk',function(req,res){
     res.send("Updating the course");
 })
 
