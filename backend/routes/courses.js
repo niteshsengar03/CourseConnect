@@ -2,12 +2,12 @@ const {Router} = require('express');
 const courseRouter = Router();
 
 //user can  purchase a course from this end point
-courseRouter.post('course/purchase',function(req,res){
+courseRouter.post('/purchase',function(req,res){
     res.send("Purchase the course");
 })
 
 //Get all courses
-courseRouter.get('course/preview',function(req,res){
+courseRouter.get('/preview',function(req,res){
     res.send("See all the course here");
 })
 
