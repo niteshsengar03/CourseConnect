@@ -1,7 +1,7 @@
 const express = require('express');
 const {userRouter} = require('./routes/user');
 const {courseRouter} = require('./routes/courses');
-const { adminRouter } = require('./routes/admin');
+const {adminRouter } = require('./routes/admin');
 const mongoose = require('mongoose');
 // const {userModel, adminModel, courseModel,purchaseModel} = require('./db/index');
 
@@ -14,8 +14,8 @@ app.use(express.json());
 
 
 app.use("/api/v1/user",userRouter);
-app.use("api/v1/course",courseRouter);
-app.use("api/v1/admin",adminRouter)
+app.use("/api/v1/course",courseRouter);
+app.use("/api/v1/admin",adminRouter);
 
 
 //Server will not start till the database is connected
@@ -27,7 +27,7 @@ app.listen(port, () => {
 });
 } catch (e) {
     console.error("Failed to connect to the database");
-}
+    }
 }
 
 main();
