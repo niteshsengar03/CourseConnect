@@ -3,7 +3,7 @@ const { userSchema,loginSchema } = require("./../type");
 const { userModel } = require("./../db/index");
 const userRouter = Router();
 const jwt = require("jsonwebtoken");
-const USER_SECRET = "userIsASuperStar";
+const {USER_SECRET} = require("./../config");
 
 userRouter.post("/signup", async function (req, res) {
   // Zod Validation
@@ -33,11 +33,15 @@ userRouter.post("/signup", async function (req, res) {
     }
 });
 
+
+
+
 userRouter.post("/signin", async function (req, res) {
   // ZOD validation
   const payload = loginSchema.safeParse(req.body);
   if(!payload.success)
     return res.status(400).json({message:"bad input"});
+
 
   const { email, password } = req.body;
   try {

@@ -1,9 +1,10 @@
 const {Router} = require('express')
 const adminRouter = Router();
 const {userSchema,loginSchema} = require('./../type');
-const {adminModel} = require('./../db');
-const ADMIN_SECRET = "adminIsASuperStar";
+const {adminModel, courseModel} = require('./../db');
 const jwt = require("jsonwebtoken");
+const {ADMIN_SECRET} = require("./../config");
+const { adminMiddleware } = require('../middleware/admin');
 
 
 adminRouter.post('/signup',async function (req, res){
@@ -57,24 +58,77 @@ adminRouter.post('/signin',async function (req,res){
 });
 
 //create course by admin
-adminRouter.post('/course',function (req,res){
-    res.send("Create a course")
+adminRouter.post('/course',adminMiddleware,async function (req,res){
+  const adminId = req.userId;
+  const {title,description,imageUrl,price} = req.body;
+  try{
+    const course = await courseModel.create({
+      title,
+      description, 
+      imageUrl, // don't ask for url allow user to directly uplaod image watch harkirat video on creating a web3 saas in 6 hours
+      price, 
+      creatorId:adminId
+    })
+    return res.status(200).json({
+      message:"Course created",
+      courseId: course._id 
+    })
+  }catch(err){
+
+  }
+  
 })
+
+
+//update course 
+adminRouter.put('/course',adminMiddleware,async function(req,res){
+    const adminId = req.userId;
+    const {title,description,imageUrl,price,courseId} = req.body;
+    try{
+      const course = await courseModel.updateOne({
+        // filter
+        _id:courseId, //  course id should be present in database
+        creatorId:adminId // And very important that course should be of his own course, he can not update any one else admin's course
+      },{
+        title,
+        description, 
+        imageUrl,
+        price, 
+      })
+      console.log(course);
+      if(course.matchedCount===0){
+          return res.status(400).json({message:"Course id is invalid or not present"});
+      }
+      return res.status(202).json({ message:"Course updated" })
+    }catch(err){
+      console.log(err);
+      return res.status(500).json({ message:"Something went wrong"});
+    }
+})
+
+
+// all courses created by admin
+adminRouter.get('/course/bulk',adminMiddleware,async function(req,res){
+    const adminId = req.userId;
+    try{
+    course =  await courseModel.find({
+      creatorId:adminId
+    })
+    return res.status(202).json({courses:course})
+  }catch(err){
+    return res.status(500).json({message:"Something went wrong"});
+  }
+})
+
+
 
 //delet course by admin
 adminRouter.delete('/course',function(req,res){
     res.send("Deleting the course")
 })
 
-//update course 
-adminRouter.put('/course',function(req,res){
-    res.send("Updating the course");
-})
 
-// all courses created by admin
-adminRouter.get('/course/bulk',function(req,res){
-    res.send("Updating the course");
-})
+
 
 module.exports= {
     adminRouter : adminRouter

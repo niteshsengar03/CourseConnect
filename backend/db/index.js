@@ -21,8 +21,8 @@ const Admin = new Schema ({
 const Course = new Schema({
     title:String,
     description:String,
-    price:Number,
     imageUrl:String,
+    price:Number,
     creatorId : ObjectId
 })
 

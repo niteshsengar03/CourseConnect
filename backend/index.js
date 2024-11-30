@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express');
 const {userRouter} = require('./routes/user');
 const {courseRouter} = require('./routes/courses');
@@ -21,7 +22,7 @@ app.use("/api/v1/admin",adminRouter);
 //Server will not start till the database is connected
 async function main(){
 try{
-await mongoose.connect("mongodb+srv://niteshsengar9831:oPNhUMViFEWtLWfV@cluster0.dtw65.mongodb.net/CourseConnect");
+await mongoose.connect(process.env.MONGO_URL);
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
