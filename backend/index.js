@@ -4,7 +4,6 @@ const {userRouter} = require('./routes/user');
 const {courseRouter} = require('./routes/courses');
 const {adminRouter } = require('./routes/admin');
 const mongoose = require('mongoose');
-// const {userModel, adminModel, courseModel,purchaseModel} = require('./db/index');
 
 
 const app = express();

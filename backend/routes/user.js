@@ -1,9 +1,10 @@
 const { Router } = require("express");
 const { userSchema,loginSchema } = require("./../type");
-const { userModel } = require("./../db/index");
+const { userModel, purchaseModel, courseModel } = require("./../db/index");
 const userRouter = Router();
 const jwt = require("jsonwebtoken");
 const {USER_SECRET} = require("./../config");
+const { userMiddleware } = require("../middleware/user");
 
 userRouter.post("/signup", async function (req, res) {
   // Zod Validation
@@ -59,9 +60,21 @@ userRouter.post("/signin", async function (req, res) {
   }
 });
 
+
+
+
 // All purchased courses of a user
-userRouter.get("/purchases", function (req, res) {
-  res.send("hii there");
+userRouter.get("/purchases", userMiddleware,async function (req, res) {
+  const userId = req.userId
+  const purchasedCourses = await purchaseModel.find({userId})
+  let puchasesCourseId=[];
+  purchasedCourses.map((course)=>{puchasesCourseId.push(course.courseId)})
+  console.log(puchasesCourseId)
+  const content = await courseModel.find({
+    _id:{"$in":puchasesCourseId}
+  })
+  console.log(content);
+  return res.status(202).json({content});
 });
 
 module.exports = {

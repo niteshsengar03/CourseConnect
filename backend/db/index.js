@@ -19,16 +19,16 @@ const Admin = new Schema ({
 })
 
 const Course = new Schema({
-    title:String,
-    description:String,
-    imageUrl:String,
-    price:Number,
+    title:{type:String,required:true},
+    description:{type:String,required:true},
+    imageUrl:{type:String,required:true},
+    price:{type:Number,required:true},
     creatorId : ObjectId
 })
 
 const Purchase = new Schema({
-    userId:ObjectId,
-    courseId:ObjectId
+    userId:{type:ObjectId,required:true},
+    courseId:{type:ObjectId, required:true}
 });
 
 
